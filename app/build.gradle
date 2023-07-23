@@ -84,4 +84,12 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     kapt("androidx.hilt:hilt-compiler:1.0.0")
+    // Retrofit
+    def retrofitVersion = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    // OkHTTP
+    def okhttpVersion = "4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 }
