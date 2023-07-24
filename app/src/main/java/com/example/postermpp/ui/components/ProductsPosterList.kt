@@ -31,7 +31,7 @@ import coil.request.ImageRequest
 @Composable
 fun TvShowPoster(
     title: String,
-    tvShow: List<String>,
+    products: List<String>,
     modifier: Modifier = Modifier
 ) {
    Column(modifier = modifier) {
@@ -47,7 +47,7 @@ fun TvShowPoster(
           contentPadding = PaddingValues(horizontal = 1.dp),
           horizontalArrangement = Arrangement.spacedBy(10.dp)
       ) {
-         items(tvShow) {
+         items(products) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(it)
@@ -57,7 +57,7 @@ fun TvShowPoster(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10))
                     .size(width = 138.dp, height = 180.dp),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Crop
             )
          }
       }

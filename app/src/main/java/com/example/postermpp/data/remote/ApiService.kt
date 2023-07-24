@@ -1,6 +1,7 @@
 package com.example.postermpp.data.remote
 
-import com.example.postermpp.data.remote.dto.TvShowDtoItem
+import com.example.postermpp.BuildConfig
+import com.example.postermpp.data.remote.dto.ProductsDtoItem
 import retrofit2.http.GET
 
 /**
@@ -11,9 +12,11 @@ import retrofit2.http.GET
 interface ApiService {
 
    companion object {
-      const val BASE_URL = "https://api.tvmaze.com/"
+      const val BASE_URL = BuildConfig.BASE_URL
    }
 
-   @GET("shows")
-   suspend fun getTvShow(): List<TvShowDtoItem>
+   @GET("products")
+   suspend fun getProducts(): List<ProductsDtoItem>
+   @GET("products/category/electronics")
+   suspend fun getElectroProducts(): List<ProductsDtoItem>
 }

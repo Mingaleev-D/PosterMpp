@@ -2,8 +2,8 @@ package com.example.postermpp.di
 
 import com.example.postermpp.data.remote.ApiService
 import com.example.postermpp.data.remote.ApiService.Companion.BASE_URL
-import com.example.postermpp.data.repository.TvShowRepositoryImpl
-import com.example.postermpp.domain.repository.TVShowRepository
+import com.example.postermpp.data.repository.ProductsRepositoryImpl
+import com.example.postermpp.domain.repository.ProductsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +35,7 @@ object AppModule {
    @Provides
    fun provideRepository(
        api: ApiService
-   ): TVShowRepository {
-      return TvShowRepositoryImpl(api)
+   ): ProductsRepository {
+      return ProductsRepositoryImpl(api)
    }
 }

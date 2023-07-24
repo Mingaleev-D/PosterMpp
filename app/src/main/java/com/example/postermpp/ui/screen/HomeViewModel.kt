@@ -5,9 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.postermpp.domain.repository.TVShowRepository
+import com.example.postermpp.domain.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 /**
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    val repository: TVShowRepository
+    val repository: ProductsRepository
 ) : ViewModel() {
 
    var state by mutableStateOf(HomeState())
@@ -25,19 +26,34 @@ class HomeViewModel @Inject constructor(
 
    init {
       state = state.copy(isLoading = true)
-      getTvShow()
+      viewModelScope.launch {
+         supervisorScope {
+            val products = launch { getProducts() }
+            val electro = launch { getElectro() }
+            listOf(products, electro).map { it.join() }
+            state = state.copy(isLoading = false)
+         }
+      }
    }
 
-   private fun getTvShow() {
-      viewModelScope.launch {
-         repository.getTvShow().onSuccess {
-            state = state.copy(
-                showSuccess = it
-            )
-         }.onFailure {
-            println()
-         }
-         state = state.copy(isLoading = false)
+   private suspend fun getProducts() {
+      repository.getProducts().onSuccess {
+         state = state.copy(
+             productsSuccess = it
+         )
+      }.onFailure {
+         println()
+      }
+
+   }
+
+   private suspend fun getElectro() {
+      repository.getElectro().onSuccess {
+         state = state.copy(
+             electroSuccess = it
+         )
+      }.onFailure {
+         println()
       }
    }
 }
