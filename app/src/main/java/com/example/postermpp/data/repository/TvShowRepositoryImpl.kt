@@ -13,7 +13,12 @@ import com.example.postermpp.domain.repository.TVShowRepository
 class TvShowRepositoryImpl(
     private val api: ApiService
 ) : TVShowRepository {
-   override suspend fun getTvShow(): List<TvShowModel> {
-      return api.getTvShow().map { it.toDomain() }
+   override suspend fun getTvShow(): Result<List<TvShowModel>> {
+      return try {
+         Result.success(api.getTvShow().map { it.toDomain() })
+      } catch (e: Exception) {
+         Result.failure(e)
+      }
+
    }
 }

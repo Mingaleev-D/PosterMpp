@@ -9,5 +9,5 @@ import com.example.postermpp.domain.model.TvShowModel
 
 interface TVShowRepository {
 
-   suspend fun getTvShow():List<TvShowModel>
+   suspend fun getTvShow():Result<List<TvShowModel>>
 }

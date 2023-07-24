@@ -26,15 +26,18 @@ class HomeViewModel @Inject constructor(
    init {
       state = state.copy(isLoading = true)
       getTvShow()
-      state = state.copy(isLoading = false)
    }
 
    private fun getTvShow() {
       viewModelScope.launch {
-         val tvShow = repository.getTvShow()
-         state = state.copy(
-             showSuccess = tvShow
-         )
+         repository.getTvShow().onSuccess {
+            state = state.copy(
+                showSuccess = it
+            )
+         }.onFailure {
+            println()
+         }
+         state = state.copy(isLoading = false)
       }
    }
 }

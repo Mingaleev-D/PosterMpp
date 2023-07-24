@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.postermpp.domain.repository.TVShowRepository
 import com.example.postermpp.ui.screen.HomeScreen
+import com.example.postermpp.ui.theme.Background
 import com.example.postermpp.ui.theme.PosterMppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,8 +28,7 @@ class MainActivity : ComponentActivity() {
       super.onCreate(savedInstanceState)
       setContent {
          PosterMppTheme {
-            // A surface container using the 'background' color from the theme
-            Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+            Surface(modifier = Modifier.fillMaxSize(), color = Background) {
                val navController = rememberNavController()
                NavHost(navController = navController, startDestination = "HOME") {
                   composable(route = "HOME") {
