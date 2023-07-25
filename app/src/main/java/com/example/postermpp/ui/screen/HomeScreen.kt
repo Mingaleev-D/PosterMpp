@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.postermpp.domain.model.ProductsModel
 import com.example.postermpp.ui.components.HomeChip
 import com.example.postermpp.ui.components.HomeHeader
 import com.example.postermpp.ui.components.HomeProductsPoster
@@ -31,6 +32,7 @@ import com.example.postermpp.ui.components.TvShowPoster
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onProductClick: (ProductsModel) -> Unit
 ) {
 
    val state = viewModel.state
@@ -56,8 +58,10 @@ fun HomeScreen(
          }) {
             TvShowPoster(
                 title = "Products",
-                products = state.productsSuccess.map { it.image }
-            )
+                products = state.productsSuccess
+            ){
+               onProductClick(it)
+            }
          }
       }
 
@@ -67,12 +71,14 @@ fun HomeScreen(
          }) {
             TvShowPoster(
                 title = "Electronics",
-                products = state.electroSuccess.map { it.image }
-            )
+                products = state.electroSuccess
+            ){
+               onProductClick(it)
+            }
          }
       }
 
-   if(state.filteredProducts.isNotEmpty()){
+      if (state.filteredProducts.isNotEmpty()) {
          item(span = {
             GridItemSpan(2)
          }) {
@@ -86,7 +92,9 @@ fun HomeScreen(
       }
 
       items(state.filteredProducts) {
-         HomeProductsPoster(imageUrl = it.image, posterSize = ProductPosterSize.BIG)
+         HomeProductsPoster(imageUrl = it.image, posterSize = ProductPosterSize.BIG){
+            onProductClick(it)
+         }
       }
    }
 

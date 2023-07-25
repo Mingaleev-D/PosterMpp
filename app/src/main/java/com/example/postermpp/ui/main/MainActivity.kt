@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.postermpp.ui.screen.HomeScreen
+import com.example.postermpp.ui.screen.detail.DetailScreen
 import com.example.postermpp.ui.theme.Background
 import com.example.postermpp.ui.theme.PosterMppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +29,18 @@ class MainActivity : ComponentActivity() {
                val navController = rememberNavController()
                NavHost(navController = navController, startDestination = "HOME") {
                   composable(route = "HOME") {
-                     HomeScreen()
+                     HomeScreen(){
+                        navController.navigate("DETAIL/${it.id}")
+                     }
+                  }
+                  composable("DETAIL/{detail_id}", arguments = listOf(
+                      navArgument("detail_id") {
+                         type = NavType.IntType
+                      }
+                  )) {
+                     DetailScreen(){
+                        navController.popBackStack()
+                     }
                   }
                }
 

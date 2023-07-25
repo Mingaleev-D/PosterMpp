@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.postermpp.domain.model.ProductsModel
 
 /**
  * @author : Mingaleev D
@@ -31,8 +32,9 @@ import coil.request.ImageRequest
 @Composable
 fun TvShowPoster(
     title: String,
-    products: List<String>,
-    modifier: Modifier = Modifier
+    products: List<ProductsModel>,
+    modifier: Modifier = Modifier,
+    onProductClick: (ProductsModel) -> Unit
 ) {
    Column(modifier = modifier) {
       Text(
@@ -48,7 +50,9 @@ fun TvShowPoster(
           horizontalArrangement = Arrangement.spacedBy(10.dp)
       ) {
          items(products) {
-            HomeProductsPoster(imageUrl = it, posterSize = ProductPosterSize.SMALL)
+            HomeProductsPoster(imageUrl = it.image, posterSize = ProductPosterSize.SMALL){
+               onProductClick(it)
+            }
          }
       }
    }

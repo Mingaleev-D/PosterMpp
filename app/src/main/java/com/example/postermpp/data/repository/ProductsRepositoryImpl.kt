@@ -3,9 +3,11 @@ package com.example.postermpp.data.repository
 import com.example.postermpp.data.ext.resultOf
 import com.example.postermpp.data.local.ProductsDao
 import com.example.postermpp.data.local.ProductsType
+import com.example.postermpp.data.mapper.toDetailDomain
 import com.example.postermpp.data.mapper.toDomain
 import com.example.postermpp.data.mapper.toEntity
 import com.example.postermpp.data.remote.ApiService
+import com.example.postermpp.domain.model.ProductsDetailModel
 import com.example.postermpp.domain.model.ProductsModel
 import com.example.postermpp.domain.repository.ProductsRepository
 import kotlinx.coroutines.flow.Flow
@@ -87,11 +89,17 @@ class ProductsRepositoryImpl(
          }
       }
    }
+
+   override suspend fun getProductsById(id: Int):Result<ProductsDetailModel> = resultOf {
+      api.getProductsDetailsId(id).toDetailDomain()
+   }
+
    private suspend fun getFilterMenCloRemote() = resultOf {
       val menCloResult = api.getFiltermenClothing().map { it.toDomain() }
       menCloResult.forEach { dao.insertP(it.toEntity(ProductsType.MENSCLO)) }
       menCloResult
    }
 
-   }
+
+}
 

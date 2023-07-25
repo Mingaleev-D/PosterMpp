@@ -3,6 +3,7 @@ package com.example.postermpp.data.remote
 import com.example.postermpp.BuildConfig
 import com.example.postermpp.data.remote.dto.ProductsDtoItem
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -27,6 +28,9 @@ interface ApiService {
 
    @GET("products/category/men's%20clothing")
    suspend fun getFiltermenClothing(): List<ProductsDtoItem>
+
+   @GET("products/{id}")
+   suspend fun getProductsDetailsId(@Path("id") id: Int):ProductsDtoItem
 
 
 }
