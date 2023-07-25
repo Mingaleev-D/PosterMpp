@@ -41,24 +41,14 @@ fun TvShowPoster(
           fontSize = 20.sp,
           color = Color.White
       )
-      Spacer(modifier = Modifier.height(20.dp))
+      Spacer(modifier = Modifier.height(16.dp))
       LazyRow(
           modifier = Modifier.fillMaxWidth(),
           contentPadding = PaddingValues(horizontal = 1.dp),
           horizontalArrangement = Arrangement.spacedBy(10.dp)
       ) {
          items(products) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(it)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10))
-                    .size(width = 138.dp, height = 180.dp),
-                contentScale = ContentScale.Crop
-            )
+            HomeProductsPoster(imageUrl = it, posterSize = ProductPosterSize.SMALL)
          }
       }
    }

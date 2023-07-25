@@ -1,6 +1,7 @@
 package com.example.postermpp.domain.repository
 
 import com.example.postermpp.domain.model.ProductsModel
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author : Mingaleev D
@@ -8,7 +9,8 @@ import com.example.postermpp.domain.model.ProductsModel
  */
 
 interface ProductsRepository {
-
-   suspend fun getProducts():Result<List<ProductsModel>>
-   suspend fun getElectro():Result<List<ProductsModel>>
+   fun getProducts(): Flow<List<ProductsModel>>
+   fun getElectro():Flow<List<ProductsModel>>
+   fun getFilterJel():Flow<List<ProductsModel>>
+   fun getFilterMenClo():Flow<List<ProductsModel>>
 }
