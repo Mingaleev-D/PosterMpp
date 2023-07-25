@@ -48,17 +48,7 @@ fun TvShowPoster(
           horizontalArrangement = Arrangement.spacedBy(10.dp)
       ) {
          items(products) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(it)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10))
-                    .size(width = 138.dp, height = 180.dp),
-                contentScale = ContentScale.FillBounds
-            )
+            HomeProductsPoster(imageUrl = it, posterSize = ProductPosterSize.SMALL)
          }
       }
    }

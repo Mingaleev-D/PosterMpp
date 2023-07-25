@@ -1,23 +1,26 @@
 package com.example.postermpp.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.postermpp.ui.components.HomeChip
 import com.example.postermpp.ui.components.HomeHeader
+import com.example.postermpp.ui.components.HomeProductsPoster
+import com.example.postermpp.ui.components.ProductPosterSize
 import com.example.postermpp.ui.components.TvShowPoster
 
 /**
@@ -31,55 +34,65 @@ fun HomeScreen(
 ) {
 
    val state = viewModel.state
-   LazyColumn(
+
+   LazyVerticalGrid(
+       columns = GridCells.Fixed(2),
        modifier = Modifier
            .fillMaxSize()
-           .padding(start = 25.dp)
+           .padding(start = 20.dp, end = 20.dp),
+       verticalArrangement = Arrangement.spacedBy(16.dp),
+       horizontalArrangement = Arrangement.spacedBy(16.dp)
    ) {
-      item {
+
+      item(span = {
+         GridItemSpan(2)
+      }) {
          HomeHeader()
       }
 
       if (state.productsSuccess.isNotEmpty()) {
-         item {
+         item(span = {
+            GridItemSpan(2)
+         }) {
             TvShowPoster(
                 title = "Products",
                 products = state.productsSuccess.map { it.image }
             )
          }
       }
-      item {
-         Spacer(modifier = Modifier.height(16.dp))
-      }
+
       if (state.electroSuccess.isNotEmpty()) {
-         item {
+         item(span = {
+            GridItemSpan(2)
+         }) {
             TvShowPoster(
                 title = "Electronics",
                 products = state.electroSuccess.map { it.image }
             )
          }
       }
-      item {
-         Spacer(modifier = Modifier.height(16.dp))
-         //         Text(
-         //             text = "Just a chip", fontWeight = FontWeight.SemiBold,
-         //             fontSize = 20.sp,
-         //             color = Color.White
-         //         )
-         HomeChip(
-             selectedFilter = state.selectedFilter,
-             onFilterClick = {
-                viewModel.onEvent(HomeEvent.ChangeFilter(it))
-             },
-             productsList = state.filteredProducts
-         ) {
 
+   if(state.filteredProducts.isNotEmpty()){
+         item(span = {
+            GridItemSpan(2)
+         }) {
+            Spacer(modifier = Modifier.height(16.dp))
+            HomeChip(
+                selectedFilter = state.selectedFilter,
+                onFilterClick = {
+                   viewModel.onEvent(HomeEvent.ChangeFilter(it))
+                })
          }
       }
+
+      items(state.filteredProducts) {
+         HomeProductsPoster(imageUrl = it.image, posterSize = ProductPosterSize.BIG)
+      }
    }
+
    if (state.isLoading) {
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-         CircularProgressIndicator()
+         CircularProgressIndicator(color = Color.Red)
       }
    }
 }
