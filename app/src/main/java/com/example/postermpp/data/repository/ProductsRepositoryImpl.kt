@@ -22,4 +22,13 @@ class ProductsRepositoryImpl(
    override suspend fun getElectro() =resultOf {
       api.getElectroProducts().map { it.toDomain() }
    }
+
+   override suspend fun getFilterJel() = resultOf {
+      api.getFilterJewelery().map { it.toDomain() }
+      }
+
+   override suspend fun getFilterMenClo() = resultOf {
+      api.getFiltermenClothing().map { it.toDomain() }
+
+   }
 }
