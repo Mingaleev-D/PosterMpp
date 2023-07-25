@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.postermpp.domain.repository.ProductsRepository
 import com.example.postermpp.ui.components.FilterType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
@@ -39,14 +40,11 @@ class HomeViewModel @Inject constructor(
    }
 
    private suspend fun getProducts() {
-      repository.getProducts().onSuccess {
+      repository.getProducts().collect {
          state = state.copy(
              productsSuccess = it
          )
-      }.onFailure {
-         println()
       }
-
    }
 
    private suspend fun getElectro() {

@@ -1,5 +1,9 @@
 package com.example.postermpp.di
 
+import android.app.Application
+import androidx.room.Room
+import com.example.postermpp.data.local.ProductsDao
+import com.example.postermpp.data.local.ProductsDatabase
 import com.example.postermpp.data.remote.ApiService
 import com.example.postermpp.data.remote.ApiService.Companion.BASE_URL
 import com.example.postermpp.data.repository.ProductsRepositoryImpl
@@ -34,8 +38,21 @@ object AppModule {
    @Singleton
    @Provides
    fun provideRepository(
-       api: ApiService
+       api: ApiService,
+       dao: ProductsDao
    ): ProductsRepository {
-      return ProductsRepositoryImpl(api)
+      return ProductsRepositoryImpl(api, dao)
+   }
+
+   @Provides
+   @Singleton
+   fun provideDatabase(application: Application): ProductsDatabase {
+      return Room.databaseBuilder(application, ProductsDatabase::class.java, "products_db").build()
+   }
+
+   @Provides
+   @Singleton
+   fun provideDatabaseDao(database:ProductsDatabase):ProductsDao{
+      return database.dao
    }
 }
