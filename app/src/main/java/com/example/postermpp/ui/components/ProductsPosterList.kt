@@ -41,7 +41,7 @@ fun TvShowPoster(
           fontSize = 20.sp,
           color = Color.White
       )
-      Spacer(modifier = Modifier.height(20.dp))
+      Spacer(modifier = Modifier.height(16.dp))
       LazyRow(
           modifier = Modifier.fillMaxWidth(),
           contentPadding = PaddingValues(horizontal = 1.dp),
@@ -57,7 +57,7 @@ fun TvShowPoster(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10))
                     .size(width = 138.dp, height = 180.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.FillBounds
             )
          }
       }
