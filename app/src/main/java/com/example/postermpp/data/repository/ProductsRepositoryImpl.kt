@@ -40,16 +40,58 @@ class ProductsRepositoryImpl(
    }
 
 
-   override suspend fun getElectro() = resultOf {
-      api.getElectroProducts().map { it.toDomain() }
+   override fun getElectro(): Flow<List<ProductsModel>> {
+      return flow {
+         val localElectro = dao.getProducts().filter { it.type == ProductsType.ELECTRO }
+         emit(localElectro.map { it.toDomain() })
+         getElectroRemote().onSuccess {
+            emit(it)
+         }.onFailure {
+            println()
+         }
+      }
    }
 
-   override suspend fun getFilterJel() = resultOf {
-      api.getFilterJewelery().map { it.toDomain() }
+   private suspend fun getElectroRemote() = resultOf {
+      val eloctroResult = api.getElectroProducts().map { it.toDomain() }
+      eloctroResult.forEach { dao.insertP(it.toEntity(ProductsType.ELECTRO)) }
+      eloctroResult
    }
 
-   override suspend fun getFilterMenClo() = resultOf {
-      api.getFiltermenClothing().map { it.toDomain() }
+   override fun getFilterJel(): Flow<List<ProductsModel>> {
+      return flow {
+         val localJet = dao.getProducts().filter { it.type == ProductsType.JEL }
+         emit(localJet.map { it.toDomain() })
+         getFilterJelRemote().onSuccess {
+            emit(it)
+         }.onFailure {
+            println()
+         }
+      }
+   }
+
+   private suspend fun getFilterJelRemote() = resultOf {
+      val filterJetResult = api.getFilterJewelery().map { it.toDomain() }
+      filterJetResult.forEach { dao.insertP(it.toEntity(ProductsType.JEL)) }
+      filterJetResult
+   }
+
+   override fun getFilterMenClo(): Flow<List<ProductsModel>> {
+      return flow {
+         val localMenClo = dao.getProducts().filter { it.type == ProductsType.MENSCLO }
+         emit(localMenClo.map { it.toDomain() })
+         getFilterMenCloRemote().onSuccess {
+            emit(it)
+         }.onFailure {
+            println()
+         }
+      }
+   }
+   private suspend fun getFilterMenCloRemote() = resultOf {
+      val menCloResult = api.getFiltermenClothing().map { it.toDomain() }
+      menCloResult.forEach { dao.insertP(it.toEntity(ProductsType.MENSCLO)) }
+      menCloResult
+   }
 
    }
-}
+

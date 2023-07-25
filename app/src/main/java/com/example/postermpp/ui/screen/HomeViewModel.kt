@@ -48,12 +48,10 @@ class HomeViewModel @Inject constructor(
    }
 
    private suspend fun getElectro() {
-      repository.getElectro().onSuccess {
+      repository.getElectro().collect {
          state = state.copy(
              electroSuccess = it
          )
-      }.onFailure {
-         println()
       }
    }
 
@@ -62,12 +60,13 @@ class HomeViewModel @Inject constructor(
          FilterType.JEWELERY -> repository.getFilterJel()
          FilterType.MENSCLITHING -> repository.getFilterMenClo()
       }
-      jobResult.onSuccess {
-         state = state.copy(
-             filteredProducts = it
-         )
-      }.onFailure {
-         println()
+      jobResult.collect {
+         if(it.isNotEmpty()){
+            state = state.copy(
+                filteredProducts = it
+            )
+         }
+
       }
    }
 

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductsRepository {
    fun getProducts(): Flow<List<ProductsModel>>
-   suspend fun getElectro():Result<List<ProductsModel>>
-   suspend fun getFilterJel():Result<List<ProductsModel>>
-   suspend fun getFilterMenClo():Result<List<ProductsModel>>
+   fun getElectro():Flow<List<ProductsModel>>
+   fun getFilterJel():Flow<List<ProductsModel>>
+   fun getFilterMenClo():Flow<List<ProductsModel>>
 }
