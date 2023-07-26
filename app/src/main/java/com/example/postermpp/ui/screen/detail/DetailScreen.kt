@@ -1,42 +1,38 @@
 package com.example.postermpp.ui.screen.detail
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.FilterQuality.Companion.Medium
-import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ExperimentalMotionApi
+import androidx.constraintlayout.compose.MotionLayout
+import androidx.constraintlayout.compose.MotionScene
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.postermpp.ui.screen.detail.components.DetailDescriptor
+import com.example.postermpp.R
+import com.example.postermpp.ui.screen.detail.components.DetailsInfo
 
 /**
  * @author : Mingaleev D
@@ -64,81 +60,52 @@ fun DetailScreen(
              modifier = Modifier.fillMaxSize(),
              contentScale = ContentScale.FillBounds
          )
-         Column(
-             modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
-             horizontalAlignment = Alignment.CenterHorizontally,
-             verticalArrangement = Arrangement.SpaceEvenly
-         ) {
-            Text(
-                text = state.products.category,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 40.sp,
-                color = Color(0xFFE7430F)
-            )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-               DetailDescriptor(
-                   text = "price: ${state.products.price} $",
-                   backgroundColor = Color.LightGray
-               )
-               Spacer(modifier = Modifier.width(8.dp))
-               DetailDescriptor(
-                   text = state.products.rating.toString(),
-                   backgroundColor = Color.Yellow,
-                   image = Icons.Default.Star
-               )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFD500F9))),
-                text = state.products.title,
-                color = Color(0xFFD500F9),
-                fontSize = 24.sp
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(.2.dp, Color(0xFFE7430F), RoundedCornerShape(12.dp))
-                    .padding(vertical = 16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-               Text(
-                   text = "manufacturer's website",
-                   color = Color(0xFFE7430F),
-                   fontSize = 24.sp,
-                   fontWeight = FontWeight.Medium
-               )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Column(horizontalAlignment = Alignment.Start) {
-               Text(
-                   text = "DESCRIPTION: ", fontSize = 24.sp,
-                   fontWeight = FontWeight.Bold, color = Color(0xFFD500F9)
-               )
-               Text(
-                   text = state.products.description, fontSize = 14.sp,
-                   fontWeight = FontWeight.Light, color = Color(0xFFE7430F)
-               )
-            }
-         }
-      }
+         Box(
+             modifier = Modifier
+                 .fillMaxSize()
+                 .background(
+                     Brush.verticalGradient(
+                         colors = listOf(
+                             Color.Black,
+                             Color.Black.copy(alpha = 0.2f),
+                             Color.Black.copy(alpha = 0.4f),
+                             Color.Black.copy(alpha = 0.9f)
+                         )
+                     )
+                 )
+         )
 
-      Box(
-          modifier = Modifier
-              .fillMaxSize()
-              .background(
-                  Brush.verticalGradient(
-                      colors = listOf(
-                          Color.Black,
-                          Color.Transparent,
-                          Color.Black.copy(alpha = 0.6f)
-                      ), tileMode = TileMode.Clamp
-                  )
-              )
-      ) {
+         var offsetY by remember { mutableStateOf(100f) }
 
+         DetailsInfo(
+             products = state.products,
+             modifier = Modifier
+                 .align(Alignment.BottomCenter)
+                 .offset(y = offsetY.dp)
+                 .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                       change.consume()
+                       offsetY = (offsetY + (dragAmount.y / 2))
+                           .coerceIn(-300f, 100f)
+                    }
+                 }
+         )
+
+         Box(
+             modifier = Modifier
+                 .fillMaxSize()
+                 .background(
+                     Brush.verticalGradient(
+                         colors = listOf(
+                             Color.Transparent,
+                             Color.Transparent,
+                             Color.Transparent,
+                             Color.Transparent,
+                             Color.Black.copy(alpha = 0.7f)
+                         )
+                     )
+                 )
+         )
       }
 
       IconButton(

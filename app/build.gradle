@@ -93,4 +93,6 @@ dependencies {
     def okhttpVersion = "4.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
+
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 }
